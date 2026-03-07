@@ -1,0 +1,29 @@
+{
+  "name": "icdr-events",
+  "version": "1.0.0",
+  "description": "Development Code of the ICDR Events App, incluiding front-end and back-end.",
+  "keywords": [
+    "nodejs",
+    "sas",
+    "javascript",
+    "html",
+    "tailwind",
+    "expressjs",
+    "postgress"
+  ],
+  "homepage": "https://github.com/JeritoBa/ICDR-Events#readme",
+  "bugs": {
+    "url": "https://github.com/JeritoBa/ICDR-Events/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JeritoBa/ICDR-Events.git"
+  },
+  "license": "ISC",
+  "author": "ICDR Events",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
