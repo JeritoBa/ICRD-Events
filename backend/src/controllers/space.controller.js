@@ -1,9 +1,19 @@
 import {pool} from '../db/sql.js'
+import { getSpaces } from '../services/space.service.js';
 
 export const getSpaces = async (req,res) =>{
-    const {rows} = await pool.query('SELECT * FROM test.patient')
-    res.json(rows)
+    
+    try{
+        const spaces = await getSpaces();
+        res.json({spaces})
+    } catch (error){
+        console.error('Error getting the space: ', error)
+        res.status(500).json({message: 'Internal Error'})
+    }
+
 }
+
+
 
 export const getSpace =  async (req,res) =>{
     const {id} = req.params;

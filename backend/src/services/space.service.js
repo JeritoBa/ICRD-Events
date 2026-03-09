@@ -1,7 +1,7 @@
 import {pool} from '../db/sql.js'
 
 
-// Function to Show all spaces
+// 1. Function to Show all spaces
 export async function getSpaces() {
     const query = `select  s.name, s.description, s.status, sc.name 
                     from public.space s 
@@ -11,7 +11,7 @@ export async function getSpaces() {
     return rows;
 }
 
-//Function to filter by name (search bar)
+// 2. Function to filter by name (search bar)
 export async function getSpaceByName(name) {
     const query = `select  s.name, s.description, s.status, sc.name as scenario
                     from public.space s 
@@ -22,7 +22,7 @@ export async function getSpaceByName(name) {
     return rows
 }
 
-//Function to filter by status
+// 3. Function to filter by status
 export async function getSpaceByStatus(status) {
     const query = `select  s.name, s.description, s.status, sc.name as scenario
                     from public.space s 
@@ -33,7 +33,7 @@ export async function getSpaceByStatus(status) {
     return rows
 }
 
-//Function to create a new space
+// 4. Function to create a new space
 export async function createSpace(name, description, scenario) {
     const query =`insert into public.space (name, description, scenario_id)
                     values ($1, $2,(select sc.id from scenario sc where sc.name = $3 ))
@@ -42,29 +42,35 @@ export async function createSpace(name, description, scenario) {
     return rows[0]
 }
 
-//Function to delete a space
-export async function deleteSpace (name,scenario_name){
+// 5. Function to delete a space
+export async function deleteSpace (id){
     const query = `DELETE FROM public.space 
-                    WHERE name=$1 and scenario_id=(select sc.id from scenario sc where sc.name = $2 )
+                    WHERE id=$1
                     RETURNING *`
-    const {rows} = await pool.query(query, [name, scenario_name]);
+    const {rows} = await pool.query(query, [id]);
     return rows[0] || null
 }
 
-
-//Function to update an space
-async const updateSpace =async (req,res) =>{
-    const {id} = req.params;
-    const {name, birth_date} = req.body
-
-    const query = 'UPDATE test.patient SET name= $1, birth_date=$2 WHERE id=$3 RETURNING *'
-
-    try{
-        const response = await pool.query(query, [name, birth_date,id]);
-        response.rows[0]
-        res.status(200).json({ message: 'Patient updated successfully'})
-    } catch (error){
-        console.error('Error creating the patient: ', error)
-        res.status(404).json({message: 'Error updating the patient'})
-    }
+// 6. Function to update an space
+export async function updateSpace(name, description, scenario_name,id){
+    const query = `UPDATE public.space 
+                    SET name= $1, description=$2 scenario_id =(select sc.id from scenario sc where sc.name = $3 )  
+                    WHERE id= $4
+                    RETURNING *`
+    
+    const response = await pool.query(query, [name, description,scenario_name,id]);
+    response.rows[0]
 }
+
+// 7. FUnction to update status
+export async function updateSpaceStatus(id, status){
+    const query =`UPDATE public.space
+                    SET status = $1
+                    WHERE id = $2
+                    RETURNING *`
+
+    const { rows } = await pool.query(query, [status, id])
+    return rows[0]
+}
+
+
