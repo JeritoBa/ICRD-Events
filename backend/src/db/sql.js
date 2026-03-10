@@ -10,5 +10,13 @@ const pool = new Pool({
     idleTimeoutMillis: 30000
 })
 
-module.exports = pool
+pool.connect()
+  .then(client => {
+      console.log("✅ Conexión a PostgreSQL exitosa")
+      client.release()
+  })
+  .catch(err => {
+      console.error("❌ Error de conexión a PostgreSQL:", err)
+  })
 
+module.exports = pool

@@ -13,8 +13,6 @@ export const getSpaces = async (req,res) =>{
 
 }
 
-
-
 export const getSpace =  async (req,res) =>{
     const {id} = req.params;
     const query = 'SELECT * FROM test.patient WHERE id=$1'
